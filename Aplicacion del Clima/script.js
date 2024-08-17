@@ -1,24 +1,30 @@
+//  https://openweathermap.org/          Api del Clima
+
 let urlBase = "https://api.openweathermap.org/data/2.5/weather";
 let api_key = "0eade7700ae96053767be6fec53862bc";
 let difKelvin = 273.15;
 
-document.getElementById("botonBusqueda").addEventListener("click", () => {
+document
+  .getElementById("botonBusqueda")
+  .addEventListener("click", obtenerCiudad);
+
+function obtenerCiudad() {
   const ciudad = document.getElementById("ciudadEntrada").value;
+  console.log(ciudad);
   if (ciudad) {
     fetchDatosClima(ciudad);
   }
-});
-
-function fetchDatosClima(ciudad) {
-  fetch(`${urlBase}?q=${ciudad}&appid=${api_key}`)
-    .then((data) => data.json())
-    // .then((response) => console.log(response));
-    .then((data) => mostrarDatosClima(data));
 }
 
-function mostrarDatosClima(data) {
-  // console.log(data);
+const fetchDatosClima = (ciudad) => {
+  fetch(`${urlBase}?q=${ciudad}&appid=${api_key}`)
+    .then((data) => data.json())
+    // .then((data) => console.log(data));
+    .then((data) => mostrarDatosClima(data));
+};
 
+const mostrarDatosClima = (data) => {
+  // console.log(data);
   const divDatosClima = document.getElementById("datosClima");
   divDatosClima.innerHTML = "";
 
@@ -28,6 +34,7 @@ function mostrarDatosClima(data) {
   const humedad = data.main.humidity;
   const descripcion = data.weather[0].description;
   const icono = data.weather[0].icon;
+  let urlIcono = `https://openweathermap.org/img/wn/${icono}@2x.png`;
 
   const ciudadTitulo = document.createElement("h2");
   ciudadTitulo.textContent = `${ciudadNombre}, ${paisNombre}`;
@@ -41,7 +48,7 @@ function mostrarDatosClima(data) {
   humedadInfo.textContent = `La humedad es: ${humedad}%`;
 
   const iconoInfo = document.createElement("img");
-  iconoInfo.src = `https://openweathermap.org/img/wn/${icono}@2x.png`;
+  iconoInfo.src = `${urlIcono}`;
 
   const descripcionInfo = document.createElement("p");
   descripcionInfo.textContent = `La descripción meteorológica es: ${descripcion}`;
@@ -51,4 +58,4 @@ function mostrarDatosClima(data) {
   divDatosClima.appendChild(humedadInfo);
   divDatosClima.appendChild(iconoInfo);
   divDatosClima.appendChild(descripcionInfo);
-}
+};
