@@ -11,6 +11,7 @@ function searchMovies() {
   let searchInput = document.getElementById("searchInput").value;
   fetch(`${urlBase}?api_key=${api_key}&query=${searchInput}`)
     .then((response) => response.json())
+    // .then((response) => console.log(response.results));
     .then((response) => displayMovies(response.results));
 }
 
